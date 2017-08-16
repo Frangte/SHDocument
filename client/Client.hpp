@@ -1,14 +1,13 @@
-//
-// Created by nakhoadl on 16/08/2017.
-//
-
 #ifndef SHDOCUMENT_CLIENT_HPP
 #define SHDOCUMENT_CLIENT_HPP
+#include "../json/json.hpp"
 
+namespace SHDocument {
+    class Client {
 
-class client {
+    };
+}
 
-};
 
 
 #endif //SHDOCUMENT_CLIENT_HPP
