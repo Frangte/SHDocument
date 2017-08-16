@@ -1,0 +1,10 @@
+#ifndef SHDOCUMENT_HANDLER_HPP
+#define SHDOCUMENT_HANDLER_HPP
+
+
+class Handler {
+
+};
+
+
+#endif //SHDOCUMENT_HANDLER_HPP
