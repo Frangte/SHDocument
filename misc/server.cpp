@@ -1,5 +1,6 @@
 #include "../server/Server.hpp"
 
 int main() {
-    return 0;
+    SHDocument::Server *server = SHDocument::Server::getInstance();
+    server->start();
 }

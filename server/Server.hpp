@@ -3,6 +3,9 @@
 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdlib.h>
+#include <iostream>
 
 namespace SHDocument {
     class Server {
@@ -24,22 +27,7 @@ namespace SHDocument {
         /**
          * Static instance of class
          */
-        static Server *instance = new Server();
-
-    public:
-        /**
-         * Get instance of class
-         *
-         * @return Server*
-         */
-        static Server *getInstance();
-
-        /**
-         * Get port of Server
-         *
-         * @return unsigned int
-         */
-        unsigned int getPort() const;
+        static Server *instance;
 
         void createSocket();
 
@@ -49,7 +37,15 @@ namespace SHDocument {
 
         void listening();
 
-        void handl();
+       // void handl();
+
+    public:
+        /**
+         * Get instance of class
+         *
+         * @return Server*
+         */
+        static Server *getInstance();
 
         void start();
     };

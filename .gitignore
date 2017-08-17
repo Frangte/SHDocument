@@ -1,2 +1,8 @@
 .idea/
 cmake-build-debug/
+cmake_install.cmake
+Makefile
+CMakeCache.txt
+SHDocument.cbp
+client_run
+Server_run

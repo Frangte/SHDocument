@@ -7,5 +7,7 @@ FILE(GLOB_RECURSE Test test/*.cpp)
 FILE(GLOB_RECURSE Server server/*.cpp)
 FILE(GLOB_RECURSE Json json/*.hpp)
 
-ADD_EXECUTABLE(server_run ${Server} ${Handler} misc/server.cpp)
-ADD_EXECUTABLE(client_run ${Client} ${Handler} misc/client.cpp)
+ADD_COMPILE_OPTIONS(-std=gnu++11)
+
+ADD_EXECUTABLE(Server_run ${Server} ${Handler} misc/server.cpp)
+#ADD_EXECUTABLE(Client_run ${Client} ${Handler} misc/client.cpp)

@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/client_run.dir/client/Client.cpp.o CMakeFiles/client_run.dir/handler/Handler.cpp.o CMakeFiles/client_run.dir/misc/client.cpp.o  -o client_run -rdynamic 

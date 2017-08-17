@@ -4,7 +4,10 @@
 
 namespace SHDocument {
     class Client {
+    private:
+        static Client *instance;
 
+        Client();
     };
 }
 

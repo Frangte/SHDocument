@@ -1,0 +1,1 @@
+/usr/bin/c++  -g  -rdynamic CMakeFiles/Server_run.dir/server/Server.cpp.o CMakeFiles/Server_run.dir/handler/Handler.cpp.o CMakeFiles/Server_run.dir/misc/server.cpp.o  -o Server_run 

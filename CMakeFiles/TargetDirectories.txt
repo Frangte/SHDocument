@@ -1,0 +1,3 @@
+/home/nakhoadl/workspace/SHDocument/CMakeFiles/rebuild_cache.dir
+/home/nakhoadl/workspace/SHDocument/CMakeFiles/edit_cache.dir
+/home/nakhoadl/workspace/SHDocument/CMakeFiles/Server_run.dir
