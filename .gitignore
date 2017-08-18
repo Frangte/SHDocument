@@ -1,9 +1,9 @@
 .idea/
+CMakeFiles/
 cmake-build-debug/
 cmake_install.cmake
 Makefile
 CMakeCache.txt
 SHDocument.cbp
-client_run
+Client_run
 Server_run
-CMakeFiles/

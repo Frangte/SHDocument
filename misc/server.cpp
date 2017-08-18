@@ -1,6 +1,6 @@
 #include "../server/Server.hpp"
 
 int main() {
-    SHDocument::Server *server = SHDocument::Server::getInstance();
+    nakhoadl::Server *server = nakhoadl::Server::getInstance();
     server->start();
 }
