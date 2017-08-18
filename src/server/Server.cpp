@@ -4,7 +4,7 @@
 
 using namespace nakhoadl;
 
-Server* Server::instance = NULL;
+Server* Server::instance = nullptr;
 
 Server* Server::getInstance() {
     if (Server::instance == nullptr) {
@@ -15,47 +15,40 @@ Server* Server::getInstance() {
 }
 
 Server::Server() {
-    createSocket().
-    setSockopt(3000).
+    createSocket();
     binding();
 }
 
 Server::~Server() = default;
 
 Server &Server::createSocket() {
-    if ((this->server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
-        throw std::runtime_error("Can not create socket.");
+    if ((this->socketFileDescriptor = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+        throw Exception("Can not create socket.");
     }
 
     std::cout << "Successfully created server." << std::endl;
     return *this;
 }
-Server &Server::setSockopt(unsigned int port) {
-    if (setsockopt(this->server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
-               &this->opt, sizeof(this->opt))) {
-        throw std::runtime_error("Setsockopt error.");
-    }
-
-    this->address.sin_family = AF_INET;
-    this->address.sin_addr.s_addr = INADDR_ANY;
-    this->address.sin_port = htons(port);
-
-    std::cout << "Successfully setsockopt and run at port " << port << "." << std::endl;
-    return *this;
-}
 
 Server &Server::binding() {
-    if (bind(this->server_fd, (struct sockaddr*)&this->address, this->addressLen) < 0) {
-        throw std::runtime_error("Bind error.");
+    struct sockaddr_in serverAddress;
+
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_addr.s_addr = INADDR_ANY;
+    serverAddress.sin_port = htons(PORT);
+
+    if (bind(this->socketFileDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0) {
+        Exception message("Bind error.");
+        throw message;
     }
 
-    std::cout << "Successfully binding." << std::endl;
+    std::cout << "Successfully bind and server run at port " << PORT << "." << std::endl;
     return *this;
 }
 
 void Server::start() {
-    if (listen(this->server_fd, 20) < 0) {
-        throw std::runtime_error("Listen error");
+    if (listen(this->socketFileDescriptor, 20) < 0) {
+        throw Exception("Listen error");
     }
 
     std::cout << "Server: waiting for connection." << std::endl;
@@ -63,9 +56,9 @@ void Server::start() {
     struct sockaddr_storage clientAddress;
     socklen_t clientAddressLen = sizeof(clientAddress);
     while (true) {
-        if ((newSocket_fd = accept(server_fd, (struct sockaddr *)&clientAddress,
+        if ((newSocket_fd = accept(socketFileDescriptor, (struct sockaddr *)&clientAddress,
                                    (socklen_t*)&clientAddressLen)) < 0) {
-            throw std::runtime_error("Server can't accept connection.");
+            throw Exception("Server can't accept connection.");
         }
 
         char ipClient[INET_ADDRSTRLEN];
@@ -73,4 +66,10 @@ void Server::start() {
                   INET_ADDRSTRLEN);
         std::cout << "Server got connection from: " << ipClient << "." << std::endl;
     }
+}
+
+void Server::close() {
+    ::close(this->socketFileDescriptor);
+    delete Server::instance;
+    Server::instance = nullptr;
 }

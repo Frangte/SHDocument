@@ -1,9 +1,10 @@
 #ifndef SHDOCUMENT_EXCEPTION_HPP
 #define SHDOCUMENT_EXCEPTION_HPP
 
-#include "../common.hpp"
+#include "../Common.hpp"
 #include <string>
 #include <iostream>
+#include <exception>
 
 namespace nakhoadl {
     class Exception {
@@ -15,6 +16,20 @@ namespace nakhoadl {
          * Exception constructor
          */
         Exception();
+
+        /**
+         * Exception copy constructor
+         *
+         * @param exception
+         */
+        Exception(const Exception &exception);
+
+        /**
+         * Exception constructor with `const char'
+         *
+         * @param message
+         */
+        Exception(const char *message);
 
         /**
          * Exception constructor with `std::string'
@@ -41,34 +56,7 @@ namespace nakhoadl {
          * @return `std::ostream &'
          */
         friend std::ostream &operator<<(std::ostream &os, const Exception &exception) {
-            os << this->message << std::endl;
-            return os;
-        }
-    };
-
-    class RuntimeException : public Exception {
-    public:
-        RuntimeException() : Exception() {
-
-        }
-
-        RuntimeException(std::string messageString) : Exception(messageString) {
-
-        }
-
-        ~RuntimeException() {
-
-        }
-
-        /**
-         * Implement operator output of object RuntimeException
-         *
-         * @param os `std::ostream &'
-         * @param exception `RuntimeException &'
-         * @return `std::ostream &'
-         */
-        friend std::ostream &operator<<(std::ostream &os, const RuntimeException &exception) {
-            os << this->message << std::endl;
+            os << exception.toString() << std::endl;
             return os;
         }
     };

@@ -1,7 +1,8 @@
-#include "../client/Client.hpp"
+#include "../src/client/Client.hpp"
+
+using namespace nakhoadl;
 
 int main() {
-
-    return 0;
+    Client *client = Client::getInstance();
 }
 

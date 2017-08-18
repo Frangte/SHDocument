@@ -5,14 +5,16 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <iostream>
+#include "../common/Common.hpp"
+#include "../common/exception/Exception.hpp"
+
+#define PORT 3000
 
 namespace nakhoadl {
+    using namespace Socket;
     class Server {
     private:
-        int server_fd;
-        struct sockaddr_in address;
-        int opt = 1;
-        socklen_t addressLen = sizeof(Server::address);
+        SocketFileDescriptor socketFileDescriptor;
 
         /**
          * Server constructor
@@ -37,14 +39,6 @@ namespace nakhoadl {
         Server &createSocket();
 
         /**
-         * Set Socopt
-         *
-         * @param port `unsigned int'
-         * @return `Server &'
-         */
-        Server &setSockopt(unsigned int port);
-
-        /**
          * Bind socket
          *
          * @return `Server &'
@@ -63,6 +57,11 @@ namespace nakhoadl {
          * Socket start listen
          */
         void start();
+
+        /**
+         *
+         */
+        void close();
     };
 }
 

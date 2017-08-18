@@ -4,21 +4,26 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include "../3rd party/json/json.hpp"
+#include "../common/exception/Exception.hpp"
+#include "../common/Common.hpp"
+
+#define PORT 3000
 
 namespace nakhoadl {
     class Client {
     private:
-        struct sockaddr_in clientAddress;
-
         static Client *instance;
+        Socket::SocketFileDescriptor socketFileDescriptor;
 
         Client();
 
+        Client &createClient();
+
+        Client &connect();
     public:
         static Client *getInstance();
 
-
+        void close();
     };
 }
 
