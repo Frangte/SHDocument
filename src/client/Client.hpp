@@ -24,6 +24,8 @@ namespace nakhoadl {
         static Client *getInstance();
 
         void close();
+
+        void handl(Socket::SocketFileDescriptor socketFileDescriptor1);
     };
 }
 

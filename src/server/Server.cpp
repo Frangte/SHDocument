@@ -52,19 +52,42 @@ void Server::start() {
     }
 
     std::cout << "Server: waiting for connection." << std::endl;
-    int newSocket_fd;
+    SocketFileDescriptor newSocketFileDescriptor;
     struct sockaddr_storage clientAddress;
     socklen_t clientAddressLen = sizeof(clientAddress);
     while (true) {
-        if ((newSocket_fd = accept(socketFileDescriptor, (struct sockaddr *)&clientAddress,
+        if ((newSocketFileDescriptor = accept(socketFileDescriptor, (struct sockaddr *)&clientAddress,
                                    (socklen_t*)&clientAddressLen)) < 0) {
             throw Exception("Server can't accept connection.");
         }
 
         char ipClient[INET_ADDRSTRLEN];
-        inet_ntop(clientAddress.ss_family, &((struct sockaddr_in *) &clientAddress)->sin_addr, ipClient,
+        inet_ntop(clientAddress.ss_family, &((struct sockaddr_in *)&clientAddress)->sin_addr, ipClient,
                   INET_ADDRSTRLEN);
         std::cout << "Server got connection from: " << ipClient << "." << std::endl;
+        if (!fork()) {
+            this->handl(newSocketFileDescriptor);
+            exit(0);
+        }
+    }
+}
+
+void Server::handl(SocketFileDescriptor socketFileDescriptor) {
+    while (true) {
+        fflush(stdin);
+        fflush(stdout);
+        char buf[100];
+        std::string getMessage;
+        std::string message;
+        int dataByte = (int) recv(socketFileDescriptor, buf, 100, 0);
+        getMessage = buf;
+        if (getMessage == "End") {
+            break;
+        }
+        std::cout << buf << std::endl;
+        std::cout << "Get message: ";
+        std::cin >> message;
+        send(socketFileDescriptor, message.c_str(), message.size(), 0);
     }
 }
 

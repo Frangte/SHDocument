@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include "Client.hpp"
+#include "../server/Server.hpp"
 
 using namespace nakhoadl;
 
@@ -21,7 +22,7 @@ Client& Client::createClient() {
 }
 
 Client& Client::connect() {
-    struct sockaddr_in serverAddress;
+    sockaddr_in serverAddress;
 
     serverAddress.sin_family = AF_INET;
     serverAddress.sin_port = htons(PORT);
@@ -31,13 +32,14 @@ Client& Client::connect() {
         throw exception;
     }
 
-    if (::connect(this->socketFileDescriptor, (struct sockaddr *)&serverAddress,
+    if (::connect(this->socketFileDescriptor, (sockaddr *)&serverAddress,
                   sizeof(serverAddress)) < 0) {
-        Exception exception("Invalid address, Address not supported.");
-        throw exception;
+        std::cout << "Can't connect." << std::endl;
+        exit(1);
     }
 
     std::cout << "Connect successfully." << std::endl;
+    this->handl(this->socketFileDescriptor);
 }
 
 void Client::close() {
@@ -52,4 +54,25 @@ Client* Client::getInstance() {
     }
 
     return Client::instance;
+}
+
+void Client::handl(SocketFileDescriptor socketFileDescriptor) {
+    while (true) {
+        fflush(stdin);
+        fflush(stdout);
+        std::string getMessage;
+        std::string message;
+
+        std::cout << "Get message: ";
+        std::cin >> getMessage;
+        send(socketFileDescriptor, getMessage.c_str(), getMessage.size(), 0);
+        if (getMessage == "End") {
+            this->close();
+            break;
+        }
+        char buff[100];
+        read(socketFileDescriptor, buff, 100);
+        message = buff;
+        std::cout << "Server: " << message << ".\n";
+    }
 }
