@@ -57,22 +57,16 @@ Client* Client::getInstance() {
 }
 
 void Client::handl(SocketFileDescriptor socketFileDescriptor) {
-    while (true) {
-        fflush(stdin);
-        fflush(stdout);
-        std::string getMessage;
-        std::string message;
-
-        std::cout << "Get message: ";
-        std::cin >> getMessage;
-        send(socketFileDescriptor, getMessage.c_str(), getMessage.size(), 0);
-        if (getMessage == "End") {
-            this->close();
+    bool running = true;
+    while (running) {
+        std::string request;
+        std::cout << "Please typing: ";
+        getline(std::cin, request);
+        send(socketFileDescriptor, request.c_str(),  request.size(), 0);
+        std::cout << "Number of request: " << request.size() << std::endl;
+        if (request == "end") {
             break;
         }
-        char buff[100];
-        read(socketFileDescriptor, buff, 100);
-        message = buff;
-        std::cout << "Server: " << message << ".\n";
     }
+    ::close(socketFileDescriptor);
 }

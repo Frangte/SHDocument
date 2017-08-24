@@ -5,6 +5,12 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <iostream>
+#include <stdexcept>
+#include <unistd.h>
+#include <thread>
+#include <functional>
+#include <cstring>
+#include <mutex>
 #include "../common/Common.hpp"
 #include "../common/exception/Exception.hpp"
 
@@ -15,6 +21,7 @@ namespace nakhoadl {
     class Server {
     private:
         SocketFileDescriptor socketFileDescriptor;
+        std::mutex mutexMain;
 
         /**
          * Server constructor
@@ -61,7 +68,7 @@ namespace nakhoadl {
         /**
          *
          */
-        void handl(SocketFileDescriptor socketFileDescriptor);
+        void handl(SocketFileDescriptor &socketFileDescriptor);
 
         /**
          *

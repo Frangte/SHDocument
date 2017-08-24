@@ -1,5 +1,3 @@
-#include <stdexcept>
-#include <unistd.h>
 #include "Server.hpp"
 
 using namespace nakhoadl;
@@ -46,6 +44,26 @@ Server &Server::binding() {
     return *this;
 }
 
+void Server::handl(SocketFileDescriptor &socketFileDescriptor) {
+    while (true) {
+        char request[100];
+        ssize_t bytes = recv(socketFileDescriptor, request, 100, 0);
+        if (bytes == 0) {
+            ::close(socketFileDescriptor);
+            return;
+        }
+        mutexMain.lock();
+        std::cout << "Thread id: " <<  std::this_thread::get_id() << ", Client: "
+                  << socketFileDescriptor << ", Bytes = " << bytes
+                  << ", Message: " << request << std::endl;
+        mutexMain.unlock();
+        if (strcmp("end", request) == 0) {
+            break;
+        }
+    }
+    ::close(socketFileDescriptor);
+}
+
 void Server::start() {
     if (listen(this->socketFileDescriptor, 20) < 0) {
         throw Exception("Listen error");
@@ -65,34 +83,7 @@ void Server::start() {
         inet_ntop(clientAddress.ss_family, &((struct sockaddr_in *)&clientAddress)->sin_addr, ipClient,
                   INET_ADDRSTRLEN);
         std::cout << "Server got connection from: " << ipClient << "." << std::endl;
-        if (!fork()) {
-            this->handl(newSocketFileDescriptor);
-            exit(0);
-        }
+        std::thread newThread(&Server::handl, this,std::ref(newSocketFileDescriptor));
+        newThread.detach();
     }
-}
-
-void Server::handl(SocketFileDescriptor socketFileDescriptor) {
-    while (true) {
-        fflush(stdin);
-        fflush(stdout);
-        char buf[100];
-        std::string getMessage;
-        std::string message;
-        int dataByte = (int) recv(socketFileDescriptor, buf, 100, 0);
-        getMessage = buf;
-        if (getMessage == "End") {
-            break;
-        }
-        std::cout << buf << std::endl;
-        std::cout << "Get message: ";
-        std::cin >> message;
-        send(socketFileDescriptor, message.c_str(), message.size(), 0);
-    }
-}
-
-void Server::close() {
-    ::close(this->socketFileDescriptor);
-    delete Server::instance;
-    Server::instance = nullptr;
 }
