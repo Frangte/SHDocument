@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.2)
 PROJECT(SHDocument C CXX)
 
 FILE(GLOB_RECURSE Handler
-        src/handler/*.cpp)
+                  src/handler/*.cpp)
 
 FILE(GLOB_RECURSE Client
                   src/client/*.cpp)
@@ -11,7 +11,7 @@ FILE(GLOB_RECURSE Test
                   test/*.cpp)
 
 FILE(GLOB_RECURSE Server
-        src/server/*.cpp)
+                  src/server/*.cpp)
 
 FILE(GLOB_RECURSE Json
                   src/3rd

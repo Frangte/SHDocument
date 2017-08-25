@@ -21,7 +21,12 @@ namespace nakhoadl {
     class Server {
     private:
         SocketFileDescriptor socketFileDescriptor;
-        std::mutex mutexMain;
+        static unsigned int countClient;
+
+        /**
+         * Static instance of class
+         */
+        static Server *instance;
 
         /**
          * Server constructor
@@ -34,9 +39,9 @@ namespace nakhoadl {
         ~Server();
 
         /**
-         * Static instance of class
+         * Delete instance Server
          */
-        static Server *instance;
+        void destroyServer();
 
         /**
          * Create socket
@@ -52,6 +57,11 @@ namespace nakhoadl {
          */
         Server &binding();
 
+        /**
+         *
+         */
+        void handle(SocketFileDescriptor socketFileDescriptor);
+
     public:
         /**
          * Get instance of class
@@ -64,11 +74,6 @@ namespace nakhoadl {
          * Socket start listen
          */
         void start();
-
-        /**
-         *
-         */
-        void handle(SocketFileDescriptor socketFileDescriptor);
 
         /**
          *

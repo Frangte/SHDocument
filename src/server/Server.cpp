@@ -3,6 +3,7 @@
 using namespace nakhoadl;
 
 Server* Server::instance = nullptr;
+unsigned int Server::countClient = 0;
 
 Server* Server::getInstance() {
     if (Server::instance == nullptr) {
@@ -18,12 +19,17 @@ Server::Server() {
 
 Server::~Server() = default;
 
+void Server::destroyServer() {
+    if (Server::instance != nullptr) {
+        delete Server::instance;
+    }
+    Server::instance = nullptr;
+}
+
 Server &Server::createSocket() {
     if ((this->socketFileDescriptor = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         throw Exception("Can not create socket.");
     }
-
-    std::cout << "Successfully created server." << std::endl;
     return *this;
 }
 
@@ -36,8 +42,10 @@ Server &Server::binding() {
     serverAddress.sin_port = htons(PORT);
 
     int enable = 1;
-    if (setsockopt(this->socketFileDescriptor, SOL_SOCKET,
-                  (SO_REUSEPORT | SO_REUSEADDR), &enable, sizeof(enable)) < 0) {
+    if (setsockopt(this->socketFileDescriptor,
+                   SOL_SOCKET, (SO_REUSEPORT | SO_REUSEADDR),
+                   &enable, sizeof(enable)) < 0)
+    {
         Exception message("Error setsockopt.");
         throw message;
     }
@@ -63,21 +71,24 @@ void Server::handle(SocketFileDescriptor socketFileDescriptor) {
             break;
         }
 
-        std::cout << "Thread id: " <<  std::this_thread::get_id()
+        std::cout << "Thread id: " << std::this_thread::get_id()
                   << ", Client: "  << socketFileDescriptor
                   << ", Bytes = "  << bytes
                   << ", Message: " << request << std::endl;
 
     }
     ::close(socketFileDescriptor);
+    Server::countClient--;
+    std::cout << "Client " << socketFileDescriptor << " disconnected"
+              << ", number of client: " << Server::countClient << ".\n";
 }
 
 void Server::start() {
     if (listen(this->socketFileDescriptor, 20) < 0) {
-        throw Exception("Listen error");
+        throw Exception("Listen error.");
     }
 
-    std::cout << "Server: waiting for connection." << std::endl;
+    std::cout << "Server waiting for connection." << std::endl;
     struct sockaddr_storage clientAddress;
     socklen_t clientAddressLen = sizeof(clientAddress);
     while (true) {
@@ -89,10 +100,15 @@ void Server::start() {
             throw Exception("Server can't accept connection.");
         }
 
+        Server::countClient++;
         char ipClient[INET_ADDRSTRLEN];
         inet_ntop(clientAddress.ss_family, &((struct sockaddr_in *)&clientAddress)->sin_addr,
-                  ipClient, INET_ADDRSTRLEN);
-        std::cout << "Server got connection from: " << ipClient << "." << std::endl;
+                                                                  ipClient, INET_ADDRSTRLEN);
+
+        std::cout << "Server got connection from: " << ipClient
+                  << ", number of client: " << Server::countClient
+                  << std::endl;
+
         std::thread newThread(&Server::handle, this, std::ref(newSocketFileDescriptor));
         newThread.detach();
     }
