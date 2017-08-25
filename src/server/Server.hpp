@@ -68,7 +68,7 @@ namespace nakhoadl {
         /**
          *
          */
-        void handl(SocketFileDescriptor &socketFileDescriptor);
+        void handle(SocketFileDescriptor socketFileDescriptor);
 
         /**
          *
