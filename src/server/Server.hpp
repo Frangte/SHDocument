@@ -58,7 +58,7 @@ namespace nakhoadl {
         Server &binding();
 
         /**
-         *
+         * This function is handle request of client and response to them
          */
         void handle(SocketFileDescriptor socketFileDescriptor);
 
@@ -71,14 +71,9 @@ namespace nakhoadl {
         static Server *getInstance();
 
         /**
-         * Socket start listen
+         * Run server
          */
         void start();
-
-        /**
-         *
-         */
-        void close();
     };
 }
 

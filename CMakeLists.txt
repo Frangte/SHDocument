@@ -25,7 +25,9 @@ FIND_PACKAGE(Threads REQUIRED)
 
 ADD_COMPILE_OPTIONS(-std=gnu++11)
 
+
 ADD_EXECUTABLE(Server_run ${Server} ${Handler} ${Exception} misc/server.cpp)
 ADD_EXECUTABLE(Client_run ${Client} ${Handler} ${Exception} misc/client.cpp)
 
+# Link target Server_run to lib pthread
 TARGET_LINK_LIBRARIES (Server_run ${CMAKE_THREAD_LIBS_INIT})
