@@ -1,6 +1,8 @@
 #include "../src/server/Server.hpp"
 
+using namespace nakhoadl::Socket;
+
 int main() {
-    nakhoadl::Server *server = nakhoadl::Server::getInstance();
+    Server *server = Server::getInstance();
     server->start();
 }

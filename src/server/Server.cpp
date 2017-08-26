@@ -1,6 +1,6 @@
 #include "Server.hpp"
 
-using namespace nakhoadl;
+using namespace nakhoadl::Socket;
 
 Server* Server::instance = nullptr;
 unsigned int Server::countClient = 0;
@@ -66,7 +66,7 @@ void Server::handle(SocketFileDescriptor socketFileDescriptor) {
     char request[100];
     while (true) {
         std::memset(request, 0, 100);
-        ssize_t bytes = recv(socketFileDescriptor, request, 100, 0);
+        ssize_t bytes = recv(socketFileDescriptor, request, 100, 0); // Receives request from connected socket
         if (bytes == 0) {
             break;
         }

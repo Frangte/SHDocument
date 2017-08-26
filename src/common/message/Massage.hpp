@@ -4,10 +4,12 @@
 //#include "../../3rd party/json/json.hpp"
 
 namespace nakhoadl {
-    class Message {
+    namespace Socket {
+        class Message {
 
-    };
-}
+        };
+    } // End of namespace Socket
+} // End of namespace nakhoadl
 
 
 #endif //SHDOCUMENT_MASSAGE_HPP

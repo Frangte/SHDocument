@@ -1,8 +1,7 @@
 #include <unistd.h>
 #include "Client.hpp"
-#include "../server/Server.hpp"
 
-using namespace nakhoadl;
+using Client = nakhoadl::Socket::Client;
 
 Client* Client::instance = nullptr;
 
@@ -39,7 +38,7 @@ Client& Client::connect() {
     }
 
     std::cout << "Connect successfully." << std::endl;
-    this->handl(this->socketFileDescriptor);
+    this->handle(this->socketFileDescriptor);
 }
 
 void Client::close() {
@@ -56,7 +55,7 @@ Client* Client::getInstance() {
     return Client::instance;
 }
 
-void Client::handl(SocketFileDescriptor socketFileDescriptor) {
+void Client::handle(SocketFileDescriptor socketFileDescriptor) {
     bool running = true;
     while (running) {
         std::string request;

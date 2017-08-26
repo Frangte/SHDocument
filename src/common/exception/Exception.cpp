@@ -1,6 +1,6 @@
 #include "Exception.hpp"
 
-using namespace nakhoadl;
+using namespace nakhoadl::Socket;
 
 Exception::Exception() {
     this->message = "[nakhoadl::Exception]";
@@ -10,7 +10,7 @@ Exception::Exception(const Exception &exception) {
     this->message = exception.message;
 }
 
-Exception::Exception(std::string messageString) {
+Exception::Exception(const std::string &messageString) {
     this->message = messageString;
 }
 

@@ -2,12 +2,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.2)
 PROJECT(SHDocument C CXX)
 
 FILE(GLOB_RECURSE Handler
-                  src/handler/*.cpp)
+        src/common/handler/*.cpp)
 
 FILE(GLOB_RECURSE Client
                   src/client/*.cpp)
 
 FILE(GLOB_RECURSE Test
+                  misc/mainTest.cpp
                   test/*.cpp)
 
 FILE(GLOB_RECURSE Server
@@ -26,8 +27,8 @@ FIND_PACKAGE(Threads REQUIRED)
 ADD_COMPILE_OPTIONS(-std=gnu++11)
 
 
-ADD_EXECUTABLE(Server_run ${Server} ${Handler} ${Exception} misc/server.cpp)
-ADD_EXECUTABLE(Client_run ${Client} ${Handler} ${Exception} misc/client.cpp)
-
+ADD_EXECUTABLE(ServerRun ${Server} ${Handler} ${Exception} misc/server.cpp)
+ADD_EXECUTABLE(ClientRun ${Client} ${Handler} ${Exception} misc/client.cpp)
+ADD_EXECUTABLE(JsonTest ${Test})
 # Link target Server_run to lib pthread
-TARGET_LINK_LIBRARIES (Server_run ${CMAKE_THREAD_LIBS_INIT})
+TARGET_LINK_LIBRARIES (ServerRun ${CMAKE_THREAD_LIBS_INIT})

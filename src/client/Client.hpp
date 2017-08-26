@@ -5,30 +5,30 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include "../common/exception/Exception.hpp"
-#include "../common/Common.hpp"
 
 #define PORT 3000
 
 namespace nakhoadl {
-    class Client {
-    private:
-        static Client *instance;
-        Socket::SocketFileDescriptor socketFileDescriptor;
+    namespace Socket {
+        class Client {
+        private:
+            static Client *instance;
 
-        Client();
+            Socket::SocketFileDescriptor socketFileDescriptor;
 
-        Client &createClient();
+            Client();
 
-        Client &connect();
-    public:
-        static Client *getInstance();
+            Client &createClient();
 
-        void close();
+            Client &connect();
+        public:
+            static Client *getInstance();
 
-        void handl(Socket::SocketFileDescriptor socketFileDescriptor1);
-    };
-}
+            void close();
 
-
+            void handle(Socket::SocketFileDescriptor socketFileDescriptor1);
+        };
+    } // End of namespace Socket
+} // End of namespace ankhoadl
 
 #endif //SHDOCUMENT_CLIENT_HPP

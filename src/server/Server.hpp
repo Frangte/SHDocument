@@ -4,78 +4,79 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <unistd.h> // for close
 #include <iostream>
-#include <stdexcept>
-#include <unistd.h>
-#include <thread>
-#include <functional>
-#include <cstring>
-#include <mutex>
+#include <thread> // for std::thread
+#include <functional> // for std::ref
+#include <cstring> // for std::memset
 #include "../common/Common.hpp"
 #include "../common/exception/Exception.hpp"
 
 #define PORT 3000
 
 namespace nakhoadl {
-    using namespace Socket;
-    class Server {
-    private:
-        SocketFileDescriptor socketFileDescriptor;
-        static unsigned int countClient;
+    namespace Socket {
 
-        /**
-         * Static instance of class
-         */
-        static Server *instance;
 
-        /**
-         * Server constructor
-         */
-        Server();
+        class Server {
+        private:
+            SocketFileDescriptor socketFileDescriptor;
+            static unsigned int countClient;
 
-        /**
-         * Server destructor
-         */
-        ~Server();
+            /**
+             * Static instance of class
+             */
+            static Server *instance;
 
-        /**
-         * Delete instance Server
-         */
-        void destroyServer();
+            /**
+             * Server constructor
+             */
+            Server();
 
-        /**
-         * Create socket
-         *
-         * @return `Server &'
-         */
-        Server &createSocket();
+            /**
+             * Server destructor
+             */
+            ~Server();
 
-        /**
-         * Bind socket
-         *
-         * @return `Server &'
-         */
-        Server &binding();
+            /**
+             * Delete instance Server
+             */
+            void destroyServer();
 
-        /**
-         * This function is handle request of client and response to them
-         */
-        void handle(SocketFileDescriptor socketFileDescriptor);
+            /**
+             * Create socket
+             *
+             * @return `Server &'
+             */
+            Server &createSocket();
 
-    public:
-        /**
-         * Get instance of class
-         *
-         * @return Server*
-         */
-        static Server *getInstance();
+            /**
+             * Bind socket
+             *
+             * @return `Server &'
+             */
+            Server &binding();
 
-        /**
-         * Run server
-         */
-        void start();
-    };
-}
+            /**
+             * This function is handle request of client and make a response to them
+             */
+            void handle(SocketFileDescriptor socketFileDescriptor);
+
+        public:
+            /**
+             * Get instance of class
+             *
+             * @return Server*
+             */
+            static Server *getInstance();
+
+            /**
+             * Run server
+             */
+            void start();
+        };
+    } // End of namespace Socket
+} // End of namespace nakhoadl
 
 
 #endif //SHDOCUMENT_SERVER_HPP

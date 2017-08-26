@@ -7,59 +7,65 @@
 #include <exception>
 
 namespace nakhoadl {
-    class Exception {
-    private:
-        std::string message;
+    namespace Socket {
 
-    public:
-        /**
-         * Exception constructor
-         */
-        Exception();
+        typedef char* string;
 
-        /**
-         * Exception copy constructor
-         *
-         * @param exception
-         */
-        Exception(const Exception &exception);
+        class Exception {
 
-        /**
-         * Exception constructor with `const char'
-         *
-         * @param message
-         */
-        Exception(const char *message);
+        private:
+            std::string message;
 
-        /**
-         * Exception constructor with `std::string'
-         */
-        Exception(std::string messageString);
+        public:
+            /**
+             * Exception constructor
+             */
+            Exception();
 
-        /**
-         * Exception destructor
-         */
-        virtual ~Exception();
+            /**
+             * Exception copy constructor
+             *
+             * @param exception
+             */
+            Exception(const Exception &exception);
 
-        /**
-         * Get message of Exception
-         *
-         * @return `string'
-         */
-        string toString() const;
+            /**
+             * Exception constructor with `const char'
+             *
+             * @param message
+             */
+            Exception(const char *message);
 
-        /**
-         * Implement operator output of object Exception
-         *
-         * @param os `std::ostream &'
-         * @param exception `Exception &'
-         * @return `std::ostream &'
-         */
-        friend std::ostream &operator<<(std::ostream &os, const Exception &exception) {
-            os << exception.toString() << std::endl;
-            return os;
-        }
-    };
-}
+            /**
+             * Exception constructor with `std::string'
+             */
+            Exception(const std::string &messageString);
+
+            /**
+             * Exception destructor
+             */
+            virtual ~Exception();
+
+            /**
+             * Get message of Exception
+             *
+             * @return `string'
+             */
+            string toString() const;
+
+            /**
+             * Override operator output of object Exception
+             *
+             * @param os `std::ostream &'
+             * @param exception `Exception &'
+             * @return `std::ostream &'
+             */
+            friend std::ostream &operator<<(std::ostream &os, const Exception &exception) {
+                os << exception.message << std::endl;
+                return os;
+            }
+        };
+    } // End of namespace Socket
+} // End of namespace nakhoadl
 
 #endif //SHDOCUMENT_EXCEPTION_HPP
