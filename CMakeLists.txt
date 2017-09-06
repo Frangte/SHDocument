@@ -1,16 +1,13 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.2)
 PROJECT(SHDocument C CXX)
 
-SET(CMAKE_CXX_STANDARD 17)
-
 FILE(GLOB_RECURSE Handler
-        src/common/handler/*.cpp)
+                  src/common/handler/*.cpp)
 
 FILE(GLOB_RECURSE Client
                   src/client/*.cpp)
 
 FILE(GLOB_RECURSE Test
-                  misc/mainTest.cpp
                   test/src/handlerTest.cpp)
 
 FILE(GLOB_RECURSE Server
@@ -26,11 +23,13 @@ FILE(GLOB_RECURSE Exception
 # Find pthread
 FIND_PACKAGE(Threads REQUIRED)
 
-ADD_COMPILE_OPTIONS(-std=gnu++17 -lstdc++fs)
+ADD_COMPILE_OPTIONS(-std=gnu++17)
 
 ADD_EXECUTABLE(ServerRun ${Server} ${Handler} ${Exception} misc/server.cpp)
 ADD_EXECUTABLE(ClientRun ${Client} ${Handler} ${Exception} misc/client.cpp)
-ADD_EXECUTABLE(AllTest ${Test})
+ADD_EXECUTABLE(AllTest ${Test} ${Handler} misc/mainTest.cpp)
+
 # Link target Server_run to lib pthread
-TARGET_LINK_LIBRARIES (ServerRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)
+TARGET_LINK_LIBRARIES(ServerRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)
 TARGET_LINK_LIBRARIES(AllTest stdc++fs)
+TARGET_LINK_LIBRARIES(ClientRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)

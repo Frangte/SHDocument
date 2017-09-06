@@ -4,19 +4,35 @@
 #include <experimental/filesystem>
 #include <string>
 #include <vector>
+#include <sys/stat.h>
 #include "../exception/Exception.hpp"
 
 namespace nakhoadl {
     namespace Socket {
         class Handler {
-        private:
-            typedef enum {
-                EXITS,
-                NOT_EXIST,
-                FORGOT_PASSWORD
-            } checker;
+            enum checker {
+                Success,
+                UnSuccess,
+                FogotPass
+            };
 
         public:
+            /**
+             * Create new directory
+             *
+             * @param path
+             * @return `bool'
+             */
+            bool createDir(const std::string &path);
+
+            /**
+             * Create recursive directory
+             *
+             * @param path
+             * @return `bool'
+             */
+            bool recursivelyCreateDir(const std::string &path);
+
             /**
              * Get all filenames in target directory
              *
