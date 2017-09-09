@@ -36,7 +36,7 @@ std::string *Handler::getContentFile(const std::string &filename) {
     std::ifstream fileIn(filename.c_str(), std::ios::binary);
 
     if (!fileIn.is_open()) {
-        return nullptr;
+        throw Exception("Can't open file " + filename);
     }
 
     auto *contentsFile = new std::string();
@@ -47,4 +47,8 @@ std::string *Handler::getContentFile(const std::string &filename) {
     fileIn.read(&(*contentsFile)[0], contentsFile->size());
     fileIn.close();
     return contentsFile;
+}
+
+std::vector<std::string>* Handler::splitStringToVector(const std::string *&target) {
+
 }

@@ -43,5 +43,14 @@ TEST_CASE("Handler") {
                                         "TARGET_LINK_LIBRARIES(ClientRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)";
         CHECK(expectContents == *contentsFile);
         delete contentsFile;
+
+        SECTION("No File To Open") {
+            try {
+                contentsFile = Handler::getContentFile("nofile.txt");
+            } catch (Exception &exception) {
+                std::string exceptionMessage = "Can't open file nofile.txt";
+                CHECK(exceptionMessage == exception.toString());
+            }
+        }
     }
 }
