@@ -31,3 +31,20 @@ bool Handler::recursivelyCreateDir(const std::string &path) {
 
     return recursivelyCreateDir(path.substr(0, slashPos));
 }
+
+std::string *Handler::getContentFile(const std::string &filename) {
+    std::ifstream fileIn(filename.c_str(), std::ios::binary);
+
+    if (!fileIn.is_open()) {
+        return nullptr;
+    }
+
+    std::string *contentsFile = new std::string();
+    fileIn.seekg(0, std::ios::end);
+    contentsFile->resize(fileIn.tellg());
+//    fileIn.seekg(0, std::ios::beg);
+//
+//    fileIn.read(&(*contentsFile)[0], contentsFile->size());
+    fileIn.close();
+    return contentsFile;
+}

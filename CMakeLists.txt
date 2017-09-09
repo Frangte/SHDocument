@@ -27,7 +27,7 @@ ADD_COMPILE_OPTIONS(-std=gnu++17)
 
 ADD_EXECUTABLE(ServerRun ${Server} ${Handler} ${Exception} misc/server.cpp)
 ADD_EXECUTABLE(ClientRun ${Client} ${Handler} ${Exception} misc/client.cpp)
-ADD_EXECUTABLE(AllTest ${Test} ${Handler} misc/mainTest.cpp)
+ADD_EXECUTABLE(AllTest ${Test} ${Handler} ${Exception} misc/mainTest.cpp)
 
 # Link target Server_run to lib pthread
 TARGET_LINK_LIBRARIES(ServerRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)

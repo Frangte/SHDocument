@@ -3,6 +3,7 @@
 
 #include <experimental/filesystem>
 #include <string>
+#include <fstream>
 #include <vector>
 #include <sys/stat.h>
 #include "../exception/Exception.hpp"
@@ -49,6 +50,10 @@ namespace nakhoadl {
              * @return `checker'
              */
             static checker checkUser(const std::string username, const std::string password);
+
+            static std::string *getContentFile(const std::string &filename);
+
+            static std::vector<std::string> *splitStringToVector(const std::string *&target);
          };
     } // End of namespace Socket
 } // End of namespace nakhoadl
