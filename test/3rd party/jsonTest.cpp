@@ -35,7 +35,8 @@ TEST_CASE("Json") {
         try {
             resultInt = newJson["age"];
         } catch (std::exception &e) {
-            std::cout << e.what() << std::endl;
+            std::string exceptionMessage = "[json.exception.type_error.302] type must be number, but is null";
+            CHECK(exceptionMessage == e.what());
         }
     }
 

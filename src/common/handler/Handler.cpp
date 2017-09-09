@@ -39,12 +39,12 @@ std::string *Handler::getContentFile(const std::string &filename) {
         return nullptr;
     }
 
-    std::string *contentsFile = new std::string();
+    auto *contentsFile = new std::string();
     fileIn.seekg(0, std::ios::end);
     contentsFile->resize(fileIn.tellg());
-//    fileIn.seekg(0, std::ios::beg);
-//
-//    fileIn.read(&(*contentsFile)[0], contentsFile->size());
+    fileIn.seekg(0, std::ios::beg);
+
+    fileIn.read(&(*contentsFile)[0], contentsFile->size());
     fileIn.close();
     return contentsFile;
 }
