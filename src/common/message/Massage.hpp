@@ -6,6 +6,11 @@
 namespace nakhoadl {
     namespace Socket {
         class Message {
+        private:
+            size_t contentLen;
+            std::string header;
+            std::string body;
+        public:
 
         };
     } // End of namespace Socket

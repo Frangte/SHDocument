@@ -34,7 +34,7 @@ namespace nakhoadl {
             bool recursivelyCreateDir(const std::string &path);
 
             /**
-             * Get all filenames in target directory
+             * Get all filename in target directory
              *
              * @param path
              * @return `std::vector<std::string>'

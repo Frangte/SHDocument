@@ -8,7 +8,7 @@ FILE(GLOB_RECURSE Client
                   src/client/*.cpp)
 
 FILE(GLOB_RECURSE Test
-                  test/src/handlerTest.cpp)
+                  test/**/*.cpp)
 
 FILE(GLOB_RECURSE Server
                   src/server/*.cpp)

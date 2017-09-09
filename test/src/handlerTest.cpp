@@ -3,9 +3,3 @@
 
 using namespace nakhoadl::Socket;
 
-TEST_CASE("Handler") {
-    std::vector<std::string> resultVector = Handler::getAllFileName("./misc");
-    for (auto &it : resultVector) {
-        std::cout << it << std::endl;
-    }
-}
