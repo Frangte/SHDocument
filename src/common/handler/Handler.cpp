@@ -76,3 +76,17 @@ std::vector<std::string*> *Handler::splitStringToVector(const std::string &targe
     resultVector->push_back(endOfString);
     return resultVector;
 }
+
+size_t Handler::getSizeOfFile(const std::string &filename) {
+    std::fstream infile(filename.c_str());
+
+    if (!infile.is_open()) {
+        return 0;
+    }
+
+    infile.seekg(0, std::ios::end);
+    size_t sizeResult = infile.tellg();
+    infile.seekg(0, std::ios::beg);
+    infile.close();
+    return sizeResult;
+}
