@@ -41,7 +41,7 @@ std::string *Handler::getContentFile(const std::string &filename) {
 
     auto *contentsFile = new std::string();
     fileIn.seekg(0, std::ios::end);
-    contentsFile->resize(fileIn.tellg());
+    contentsFile->resize((unsigned long)fileIn.tellg());
     fileIn.seekg(0, std::ios::beg);
 
     fileIn.read(&(*contentsFile)[0], contentsFile->size());
@@ -49,6 +49,22 @@ std::string *Handler::getContentFile(const std::string &filename) {
     return contentsFile;
 }
 
-std::vector<std::string>* Handler::splitStringToVector(const std::string *&target) {
+std::vector<std::string>* Handler::splitStringToVector(const std::string &target) {
+    // Get size of vector
+    auto *resultVector = new std::vector<std::string>();
+    size_t sizeOfVector = target.size() / 1024;
+    if (target.size() % 1024 > 0) {
+        sizeOfVector += 1;
+    }
 
+    if (sizeOfVector == 0) {
+        return resultVector;
+    }
+
+    resultVector->resize(sizeOfVector);
+
+    size_t index;
+    for (index = 0; index < resultVector->size() - 1; index++) {
+
+    }
 }

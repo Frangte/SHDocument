@@ -51,6 +51,30 @@ TEST_CASE("Handler") {
                 std::string exceptionMessage = "Can't open file nofile.txt";
                 CHECK(exceptionMessage == exception.toString());
             }
+        } // Section "No File To Open"
+    } // Section "Get Contents File"
+
+    SECTION("Split string to vector") {
+        SECTION("Empty string") {
+            std::string stringToSplit;
+            std::vector<std::string> *resultVector = Handler::splitStringToVector(stringToSplit);
+
+
+
+            delete resultVector;
+        } // Section Empty String
+
+        SECTION("Length of string is multiples of 1024") {
+            std::string stringToSplit(1027, 'a');
+            std::vector<std::string> *resultVector = Handler::splitStringToVector(stringToSplit);
+
+
+
+            delete resultVector;
+        } // Section Length of string is multiples of 1024
+
+        SECTION("Normal string") {
+            
         }
     }
 }
