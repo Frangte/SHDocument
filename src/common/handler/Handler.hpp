@@ -53,7 +53,7 @@ namespace nakhoadl {
 
             static std::string *getContentFile(const std::string &filename);
 
-            static std::vector<std::string> *splitStringToVector(const std::string &target);
+            static std::vector<std::string*> *splitStringToVector(const std::string &target);
          };
     } // End of namespace Socket
 } // End of namespace nakhoadl

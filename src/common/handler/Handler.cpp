@@ -49,9 +49,9 @@ std::string *Handler::getContentFile(const std::string &filename) {
     return contentsFile;
 }
 
-std::vector<std::string>* Handler::splitStringToVector(const std::string &target) {
+std::vector<std::string*> *Handler::splitStringToVector(const std::string &target) {
     // Get size of vector
-    auto *resultVector = new std::vector<std::string>();
+    std::vector<std::string*> *resultVector = new std::vector<std::string*>();
     size_t sizeOfVector = target.size() / 1024;
     if (target.size() % 1024 > 0) {
         sizeOfVector += 1;
@@ -61,10 +61,18 @@ std::vector<std::string>* Handler::splitStringToVector(const std::string &target
         return resultVector;
     }
 
-    resultVector->resize(sizeOfVector);
-
     size_t index;
-    for (index = 0; index < resultVector->size() - 1; index++) {
-
+    size_t indexInString = 0;
+    for (index = 0; index < sizeOfVector - 1; index++) {
+        std::string *bufferString = new std::string;
+        bufferString->resize(1025);
+        *bufferString = target.substr(indexInString, 1024);
+        resultVector->push_back(bufferString);
+        indexInString += 1024;
     }
+    auto *endOfString = new std::string;
+    *endOfString = target.substr((unsigned long)indexInString, target.size() - indexInString);
+    endOfString->shrink_to_fit();
+    resultVector->push_back(endOfString);
+    return resultVector;
 }
