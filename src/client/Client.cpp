@@ -1,7 +1,6 @@
-#include <unistd.h>
 #include "Client.hpp"
 
-using Client = nakhoadl::Socket::Client;
+using namespace nakhoadl::Socket;
 
 Client* Client::instance = nullptr;
 

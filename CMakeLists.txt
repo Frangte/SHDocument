@@ -2,14 +2,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.2)
 PROJECT(SHDocument C CXX)
 
 FILE(GLOB_RECURSE Handler
-        src/common/handler/*.cpp)
+                  src/common/handler/*.cpp)
 
 FILE(GLOB_RECURSE Client
                   src/client/*.cpp)
 
 FILE(GLOB_RECURSE Test
-                  misc/mainTest.cpp
-                  test/*.cpp)
+                  test/**/*.cpp)
 
 FILE(GLOB_RECURSE Server
                   src/server/*.cpp)
@@ -24,11 +23,16 @@ FILE(GLOB_RECURSE Exception
 # Find pthread
 FIND_PACKAGE(Threads REQUIRED)
 
-ADD_COMPILE_OPTIONS(-std=gnu++11)
-
+ADD_COMPILE_OPTIONS(-std=gnu++17)
 
 ADD_EXECUTABLE(ServerRun ${Server} ${Handler} ${Exception} misc/server.cpp)
 ADD_EXECUTABLE(ClientRun ${Client} ${Handler} ${Exception} misc/client.cpp)
-ADD_EXECUTABLE(AllTest ${Test})
+ADD_EXECUTABLE(AllTest ${Test} ${Handler} ${Exception} misc/mainTest.cpp)
+
 # Link target Server_run to lib pthread
-TARGET_LINK_LIBRARIES (ServerRun ${CMAKE_THREAD_LIBS_INIT})
+TARGET_LINK_LIBRARIES(ServerRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)
+TARGET_LINK_LIBRARIES(AllTest stdc++fs)
+TARGET_LINK_LIBRARIES(ClientRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)
+
+ADD_CUSTOM_TARGET(check-leak-test
+                  COMMAND valgrind --tool=memcheck --leak-check=yes ./AllTest)
