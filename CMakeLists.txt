@@ -33,3 +33,6 @@ ADD_EXECUTABLE(AllTest ${Test} ${Handler} ${Exception} misc/mainTest.cpp)
 TARGET_LINK_LIBRARIES(ServerRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)
 TARGET_LINK_LIBRARIES(AllTest stdc++fs)
 TARGET_LINK_LIBRARIES(ClientRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)
+
+ADD_CUSTOM_TARGET(check-leak-test
+                  COMMAND valgrind --tool=memcheck --leak-check=yes ./AllTest)

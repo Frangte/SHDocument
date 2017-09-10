@@ -40,7 +40,10 @@ TEST_CASE("Handler") {
                                         "# Link target Server_run to lib pthread\n"
                                         "TARGET_LINK_LIBRARIES(ServerRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)\n"
                                         "TARGET_LINK_LIBRARIES(AllTest stdc++fs)\n"
-                                        "TARGET_LINK_LIBRARIES(ClientRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)";
+                                        "TARGET_LINK_LIBRARIES(ClientRun ${CMAKE_THREAD_LIBS_INIT} stdc++fs)\n"
+                                        "\n"
+                                        "ADD_CUSTOM_TARGET(check-leak-test\n"
+                                        "                  COMMAND valgrind --tool=memcheck --leak-check=yes ./AllTest)";
         CHECK(expectContents == *contentsFile);
         delete contentsFile;
 
@@ -75,7 +78,6 @@ TEST_CASE("Handler") {
         SECTION("Empty string") {
             std::string stringToSplit;
             std::vector<std::string*> *resultVector = Handler::splitStringToVector(stringToSplit);
-
             delete resultVector;
         } // Section Empty String
 
@@ -89,11 +91,26 @@ TEST_CASE("Handler") {
 
             size_t sizeOfVector = resultVector->size();
             CHECK(sizeOfVector == 2);
+
+            size_t index;
+            for (index = 0; index < resultVector->size(); index++) {
+                delete (*resultVector)[index];
+            }
             delete resultVector;
         } // Section Length of string is multiples of 1024
 
         SECTION("Normal string") {
+            std::string *stringToSplit = Handler::getContentFile("misc/filetotest/filetotest.txt");
+            std::vector<std::string*> *vectorContent = Handler::splitStringToVector(*stringToSplit);
 
+            size_t expectSizeOfVector = 74;
+            CHECK(expectSizeOfVector == vectorContent->size());
+            delete stringToSplit;
+            size_t index;
+            for (index = 0; index < vectorContent->size(); index++) {
+                delete (*vectorContent)[index];
+            }
+            delete vectorContent;
         }
     }
 }
