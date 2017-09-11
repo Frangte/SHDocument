@@ -82,9 +82,12 @@ namespace nakhoadl {
                  */
                 static bool
                 writeVectorStringToFile(const std::vector<std::string *> *target, const std::string &filename);
-            };
+            }; // Class File
 
+            class SHDocumentHandler {
+            public:
 
+            }; // Class SHDocumentHandler
         } // Namespace Handler
     } // End of namespace Socket
 } // End of namespace nakhoadl
