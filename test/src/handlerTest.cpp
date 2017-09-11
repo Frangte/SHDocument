@@ -2,10 +2,11 @@
 #include "../../3rd party/catch/catch.hpp"
 
 using namespace nakhoadl::Socket;
+using namespace nakhoadl::Socket::Handler;
 
 TEST_CASE("Handler") {
     SECTION("Get Contents File") {
-        std::string *contentsFile = Handler::getContentFile("misc/filetotest/CMakeLists.txt");
+        std::string *contentsFile = File::getContentFile("misc/filetotest/CMakeLists.txt");
         std::string expectContents =    "CMAKE_MINIMUM_REQUIRED(VERSION 3.2)\n"
                                         "PROJECT(SHDocument C CXX)\n"
                                         "\n"
@@ -49,7 +50,7 @@ TEST_CASE("Handler") {
 
         SECTION("No File To Open") {
             try {
-                contentsFile = Handler::getContentFile("nofile.txt");
+                contentsFile = File::getContentFile("nofile.txt");
             } catch (Exception &exception) {
                 std::string exceptionMessage = "Can't open file nofile.txt";
                 CHECK(exceptionMessage == exception.toString());
@@ -59,17 +60,17 @@ TEST_CASE("Handler") {
 
     SECTION("Get Size File") {
         SECTION("No file to open") {
-            size_t sizeOfFile = Handler::getSizeOfFile("misc/filetotest/nofile.txt");
+            size_t sizeOfFile = File::getSizeOfFile("misc/filetotest/nofile.txt");
             CHECK(0 == sizeOfFile);
         } // Section No file to open
 
         SECTION("Empty file") {
-            size_t sizeOfFile = Handler::getSizeOfFile("misc/filetotest/emptyfile.txt");
+            size_t sizeOfFile = File::getSizeOfFile("misc/filetotest/emptyfile.txt");
             CHECK(0 == sizeOfFile);
         } // Section Empty file
 
         SECTION("Normal file") {
-            size_t sizeOfFile = Handler::getSizeOfFile("misc/filetotest/filetotest.txt");
+            size_t sizeOfFile = File::getSizeOfFile("misc/filetotest/filetotest.txt");
             CHECK(75436 == sizeOfFile);
         } // Section Normal file
     }
@@ -77,13 +78,13 @@ TEST_CASE("Handler") {
     SECTION("Split String To Vector") {
         SECTION("Empty string") {
             std::string stringToSplit;
-            std::vector<std::string*> *resultVector = Handler::splitStringToVector(stringToSplit);
+            std::vector<std::string*> *resultVector = File::splitStringToVector(stringToSplit);
             delete resultVector;
         } // Section Empty String
 
         SECTION("Length of string is multiples of 1024") {
             std::string stringToSplit(2048, 'a');
-            std::vector<std::string*> *resultVector = Handler::splitStringToVector(stringToSplit);
+            std::vector<std::string*> *resultVector = File::splitStringToVector(stringToSplit);
 
             std::string expectOfEachElement(1024, 'a');
             CHECK(expectOfEachElement == (*(*resultVector)[0]));
@@ -100,8 +101,8 @@ TEST_CASE("Handler") {
         } // Section Length of string is multiples of 1024
 
         SECTION("Normal string") {
-            std::string *stringToSplit = Handler::getContentFile("misc/filetotest/filetotest.txt");
-            std::vector<std::string*> *vectorContent = Handler::splitStringToVector(*stringToSplit);
+            std::string *stringToSplit = File::getContentFile("misc/filetotest/filetotest.txt");
+            std::vector<std::string*> *vectorContent = File::splitStringToVector(*stringToSplit);
 
             size_t expectSizeOfVector = 74;
             CHECK(expectSizeOfVector == vectorContent->size());
@@ -117,20 +118,20 @@ TEST_CASE("Handler") {
     SECTION("General inspection") {
         std::string *stringReadFromExistFile;
         try {
-            stringReadFromExistFile = Handler::getContentFile("misc/filetotest/filetotest.txt");
+            stringReadFromExistFile = File::getContentFile("misc/filetotest/filetotest.txt");
         } catch (Exception &exception) {
             std::cout << exception << std::endl;
         }
 
         // Split a string
-        std::vector<std::string*> *contentsFile = Handler::splitStringToVector(*stringReadFromExistFile);
+        std::vector<std::string*> *contentsFile = File::splitStringToVector(*stringReadFromExistFile);
 
         // Write vector<string> into vector then get contents this file to compare with stringReadFromExistFile
-        bool resultWriteFile = Handler::writeVectorStringToFile(contentsFile, "misc/filetotest/newfile.txt");
+        bool resultWriteFile = File::writeVectorStringToFile(contentsFile, "misc/filetotest/newfile.txt");
         CHECK(resultWriteFile);
 
         // Read newFile.txt to string then compare
-        std::string *contentsOfNewFile = Handler::getContentFile("misc/filetotest/newfile.txt");
+        std::string *contentsOfNewFile = File::getContentFile("misc/filetotest/newfile.txt");
         CHECK(*stringReadFromExistFile == *contentsOfNewFile);
 
         size_t index;
@@ -141,4 +142,4 @@ TEST_CASE("Handler") {
         delete contentsFile;
         delete stringReadFromExistFile;
     } // Section general inspection
-}
+} // Section Handler

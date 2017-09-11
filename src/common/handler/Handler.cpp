@@ -1,10 +1,10 @@
 #include <unistd.h>
 #include "Handler.hpp"
 
-using namespace nakhoadl::Socket;
+using namespace nakhoadl::Socket::Handler;
 namespace fs = std::experimental::filesystem;
 
-std::vector<std::string> Handler::getAllFileName(const std::string &pathToTargetDirectory) {
+std::vector<std::string> File::getAllFileName(const std::string &pathToTargetDirectory) {
     std::vector<std::string> resultVector;
     try {
         for (auto &p : fs::directory_iterator(pathToTargetDirectory)) {
@@ -17,11 +17,11 @@ std::vector<std::string> Handler::getAllFileName(const std::string &pathToTarget
     return resultVector;
 }
 
-bool Handler::createDir(const std::string &path) {
+bool File::createDir(const std::string &path) {
     return mkdir(path.c_str(),  S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 }
 
-bool Handler::recursivelyCreateDir(const std::string &path) {
+bool File::recursivelyCreateDir(const std::string &path) {
     if (createDir(path)) return true;
 
     if (access(path.c_str(), F_OK) == 0) return false; // Exists path in this directory
@@ -32,7 +32,7 @@ bool Handler::recursivelyCreateDir(const std::string &path) {
     return recursivelyCreateDir(path.substr(0, slashPos));
 }
 
-std::string *Handler::getContentFile(const std::string &filename) {
+std::string *File::getContentFile(const std::string &filename) {
     std::ifstream fileIn(filename.c_str(), std::ios::binary);
 
     if (!fileIn.is_open()) {
@@ -49,7 +49,7 @@ std::string *Handler::getContentFile(const std::string &filename) {
     return contentsFile;
 }
 
-std::vector<std::string*>* Handler::splitStringToVector(const std::string &target) {
+std::vector<std::string*>* File::splitStringToVector(const std::string &target) {
     // Get size of vector
     std::vector<std::string*> *resultVector = new std::vector<std::string*>();
     size_t sizeOfVector = target.size() / 1024;
@@ -77,7 +77,7 @@ std::vector<std::string*>* Handler::splitStringToVector(const std::string &targe
     return resultVector;
 }
 
-size_t Handler::getSizeOfFile(const std::string &filename) {
+size_t File::getSizeOfFile(const std::string &filename) {
     std::fstream infile(filename.c_str());
 
     if (!infile.is_open()) {
@@ -91,7 +91,7 @@ size_t Handler::getSizeOfFile(const std::string &filename) {
     return sizeResult;
 }
 
-bool Handler::writeStringToFile(const std::string *&target, const std::string &filename) {
+bool File::writeStringToFile(const std::string *&target, const std::string &filename) {
     std::ofstream fileToWrite(filename.c_str(), std::ios::trunc);
 
     if (!fileToWrite.is_open()) {
@@ -104,7 +104,7 @@ bool Handler::writeStringToFile(const std::string *&target, const std::string &f
 }
 
 
-bool Handler::writeVectorStringToFile(const std::vector<std::string *> *target, const std::string &filename) {
+bool File::writeVectorStringToFile(const std::vector<std::string *> *target, const std::string &filename) {
     std::ofstream fileToWrite(filename.c_str(), std::ios::trunc);
 
     if (!fileToWrite.is_open()) {
