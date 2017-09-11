@@ -2,8 +2,9 @@
 
 SHDocument is simple project in my school to know about networking.
 
-Project provide client and server, server can save file from client and send file to client. Server can't handle multi connection from some client.
-And project have some Handler useful for newbie lean C and C++.
+Project provide client and server, server can save file from client 
+and send file to client. Server can handle multi connection from some client.
+And project have some Handler useful for newbie learn C and C++.
 
 It run on ubuntu, I use GCC version 5.4.0 to compile and valgrind to check memory leak, 
 cmake version 3.5.1 to auto generate makefile. 
