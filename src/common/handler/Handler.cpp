@@ -4,7 +4,7 @@
 using namespace nakhoadl::Socket;
 namespace fs = std::experimental::filesystem;
 
-std::vector<std::string> Handler::getAllFileName(const std::string pathToTargetDirectory) {
+std::vector<std::string> Handler::getAllFileName(const std::string &pathToTargetDirectory) {
     std::vector<std::string> resultVector;
     try {
         for (auto &p : fs::directory_iterator(pathToTargetDirectory)) {
@@ -49,7 +49,7 @@ std::string *Handler::getContentFile(const std::string &filename) {
     return contentsFile;
 }
 
-std::vector<std::string*> *Handler::splitStringToVector(const std::string &target) {
+std::vector<std::string*>* Handler::splitStringToVector(const std::string &target) {
     // Get size of vector
     std::vector<std::string*> *resultVector = new std::vector<std::string*>();
     size_t sizeOfVector = target.size() / 1024;
@@ -64,7 +64,7 @@ std::vector<std::string*> *Handler::splitStringToVector(const std::string &targe
     size_t index;
     size_t indexInString = 0;
     for (index = 0; index < sizeOfVector - 1; index++) {
-        std::string *bufferString = new std::string;
+        auto *bufferString = new std::string;
         bufferString->resize(1025);
         *bufferString = target.substr(indexInString, 1024);
         resultVector->push_back(bufferString);
@@ -85,8 +85,36 @@ size_t Handler::getSizeOfFile(const std::string &filename) {
     }
 
     infile.seekg(0, std::ios::end);
-    size_t sizeResult = infile.tellg();
+    size_t sizeResult = (size_t) infile.tellg();
     infile.seekg(0, std::ios::beg);
     infile.close();
     return sizeResult;
+}
+
+bool Handler::writeStringToFile(const std::string *&target, const std::string &filename) {
+    std::ofstream fileToWrite(filename.c_str(), std::ios::trunc);
+
+    if (!fileToWrite.is_open()) {
+        return false;
+    }
+
+    fileToWrite.write( &(*target)[0], target->size());
+    fileToWrite.close();
+    return true;
+}
+
+
+bool Handler::writeVectorStringToFile(const std::vector<std::string *> *target, const std::string &filename) {
+    std::ofstream fileToWrite(filename.c_str(), std::ios::trunc);
+
+    if (!fileToWrite.is_open()) {
+        return false;
+    }
+
+    size_t index;
+    for (index = 0; index < target->size(); index++) {
+        fileToWrite.write(&(*((*target)[index]))[0], (*target)[index]->size()); // Wtf &(*((*target)[index]))[0]
+    }
+    fileToWrite.close();
+    return true;
 }

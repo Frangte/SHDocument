@@ -5,7 +5,7 @@ using namespace nakhoadl::Socket;
 
 TEST_CASE("Handler") {
     SECTION("Get Contents File") {
-        std::string *contentsFile = Handler::getContentFile("CMakeLists.txt");
+        std::string *contentsFile = Handler::getContentFile("misc/filetotest/CMakeLists.txt");
         std::string expectContents =    "CMAKE_MINIMUM_REQUIRED(VERSION 3.2)\n"
                                         "PROJECT(SHDocument C CXX)\n"
                                         "\n"
@@ -105,12 +105,40 @@ TEST_CASE("Handler") {
 
             size_t expectSizeOfVector = 74;
             CHECK(expectSizeOfVector == vectorContent->size());
-            delete stringToSplit;
             size_t index;
             for (index = 0; index < vectorContent->size(); index++) {
                 delete (*vectorContent)[index];
             }
             delete vectorContent;
+            delete stringToSplit;
+        } // Section Normal string
+    } // Section split string to vector
+
+    SECTION("General inspection") {
+        std::string *stringReadFromExistFile;
+        try {
+            stringReadFromExistFile = Handler::getContentFile("misc/filetotest/filetotest.txt");
+        } catch (Exception &exception) {
+            std::cout << exception << std::endl;
         }
-    }
+
+        // Split a string
+        std::vector<std::string*> *contentsFile = Handler::splitStringToVector(*stringReadFromExistFile);
+
+        // Write vector<string> into vector then get contents this file to compare with stringReadFromExistFile
+        bool resultWriteFile = Handler::writeVectorStringToFile(contentsFile, "misc/filetotest/newfile.txt");
+        CHECK(resultWriteFile);
+
+        // Read newFile.txt to string then compare
+        std::string *contentsOfNewFile = Handler::getContentFile("misc/filetotest/newfile.txt");
+        CHECK(*stringReadFromExistFile == *contentsOfNewFile);
+
+        size_t index;
+        for (index = 0; index < contentsFile->size(); index++) {
+            delete (*contentsFile)[index];
+        }
+        delete contentsOfNewFile;
+        delete contentsFile;
+        delete stringReadFromExistFile;
+    } // Section general inspection
 }
