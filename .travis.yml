@@ -18,6 +18,7 @@ addons:
   packages: [g++-4.9, valgrind]
 
 script:
+- if [[ "${COMPILER}" != "" ]]; then export CXX=${COMPILER}; fi
 - cmake .
 - make
 - ./Alltest -d yes
