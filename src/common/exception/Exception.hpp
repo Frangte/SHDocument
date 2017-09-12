@@ -7,8 +7,6 @@
 #include <exception>
 
 namespace nakhoadl {
-    namespace Socket {
-
         typedef char* string;
 
         class Exception {
@@ -65,7 +63,6 @@ namespace nakhoadl {
                 return os;
             }
         };
-    } // End of namespace Socket
 } // End of namespace nakhoadl
 
 #endif //SHDOCUMENT_EXCEPTION_HPP

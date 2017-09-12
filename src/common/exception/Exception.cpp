@@ -1,6 +1,6 @@
 #include "Exception.hpp"
 
-using namespace nakhoadl::Socket;
+using namespace nakhoadl;
 
 Exception::Exception() {
     this->message = "[nakhoadl::Exception]";
