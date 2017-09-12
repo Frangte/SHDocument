@@ -1,6 +1,10 @@
 language: cpp
 sudo: required
 dist: trusty
+before_install:
+- sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+- sudo apt-get update
+- sudo apt-get install g++-4.9 -y
 compiler:
 - g++
 os:
