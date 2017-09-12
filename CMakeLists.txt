@@ -23,7 +23,7 @@ FILE(GLOB_RECURSE Exception
 # Find pthread
 FIND_PACKAGE(Threads REQUIRED)
 
-ADD_COMPILE_OPTIONS(-std=gnu++17)
+ADD_COMPILE_OPTIONS(-std=gnu++11)
 
 ADD_EXECUTABLE(ServerRun ${Server} ${Handler} ${Exception} misc/server.cpp)
 ADD_EXECUTABLE(ClientRun ${Client} ${Handler} ${Exception} misc/client.cpp)
