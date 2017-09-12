@@ -9,7 +9,9 @@ compiler:
 - g++
 os:
 - linux
-script:
+before_script:
+- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 - cmake .
+script:
 - make
 - ./Alltest -d yes
