@@ -1,0 +1,12 @@
+language: cpp
+sudo: required
+dist: trusty
+compiler:
+- g++
+os:
+- linux
+before_script:
+- cmake .
+script:
+- make
+- ./Alltest -d yes
