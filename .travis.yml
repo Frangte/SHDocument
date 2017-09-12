@@ -16,6 +16,7 @@ script:
 - if [[ "${COMPILER}" != "" ]]; then export CXX="${COMPILER}"; fi
 - cmake .
 - make
+- ./AllTest
 
 after_success:
-- make check-leak-test
+- cd $TRAVIS_BUILD_DIR && ./AllTest
