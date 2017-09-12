@@ -1,17 +1,26 @@
 language: cpp
 sudo: required
 dist: trusty
-before_install:
-- sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-- sudo apt-get update
-- sudo apt-get install g++-5 -y
-compiler:
-- g++
+
 os:
 - linux
-before_script:
-- if [ "$CXX" = "g++" ]; then export CXX="g++-5.4" CC="gcc-5.4"; fi
-- cmake .
+
+compiler:
+- g++
+
+evn:
+- COMPILER=g++-4.9
+- SPECIAL=valgrind
+
+addons:
+ apt:
+  sources: ['ubuntu-toolchain-r-test']
+  packages: [g++4.9, valgrind]
+
 script:
+- cmake .
 - make
 - ./Alltest -d yes
+
+after_success:
+- make check-leak-test
