@@ -16,7 +16,6 @@ script:
 - if [[ "${COMPILER}" != "" ]]; then export CXX="${COMPILER}"; fi
 - cmake .
 - make
-- ./Alltest -d yes
 
 after_success:
 - make check-leak-test
