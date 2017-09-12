@@ -9,8 +9,7 @@ compiler:
 - g++
 os:
 - linux
-before_script:
-- cmake .
 script:
+- cmake .
 - make
 - ./Alltest -d yes
