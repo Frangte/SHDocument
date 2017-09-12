@@ -10,7 +10,7 @@ compiler:
 os:
 - linux
 before_script:
-- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+- if [ "$CXX" = "g++" ]; then export CXX="g++-5.4" CC="gcc-5.4"; fi
 - cmake .
 script:
 - make
