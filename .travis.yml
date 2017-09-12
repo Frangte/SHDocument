@@ -6,7 +6,7 @@ os:
 - linux
 
 compiler:
-- g++
+- gcc
 
 evn:
 - COMPILER=g++-4.9
