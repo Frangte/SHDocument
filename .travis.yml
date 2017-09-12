@@ -9,14 +9,10 @@ before_install:
 
 install:
   # C++14
-  - sudo apt-get install -qq g++-6
+  - sudo apt-get install -qq g++-6 valgrind
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
 
 script:
-- if [[ "${COMPILER}" != "" ]]; then export CXX="${COMPILER}"; fi
 - cmake .
 - make
-- ./AllTest
-
-after_success:
-- cd $TRAVIS_BUILD_DIR && ./AllTest
+- make check-leak-test
