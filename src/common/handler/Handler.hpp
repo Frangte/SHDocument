@@ -9,7 +9,6 @@
 #include "../exception/Exception.hpp"
 
 namespace nakhoadl {
-    namespace Socket {
         namespace Handler {
             class File {
             public:
@@ -89,7 +88,6 @@ namespace nakhoadl {
 
             }; // Class SHDocumentHandler
         } // Namespace Handler
-    } // End of namespace Socket
 } // End of namespace nakhoadl
 
 #endif //SHDOCUMENT_HANDLER_HPP

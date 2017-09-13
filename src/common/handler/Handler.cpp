@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include "Handler.hpp"
 
-using namespace nakhoadl::Socket::Handler;
+using namespace nakhoadl::Handler;
 namespace fs = std::experimental::filesystem;
 
 std::vector<std::string> File::getAllFileName(const std::string &pathToTargetDirectory) {
