@@ -32,14 +32,14 @@ bool File::recursivelyCreateDir(const std::string &path) {
     return recursivelyCreateDir(path.substr(0, slashPos));
 }
 
-std::string *File::getContentFile(const std::string &filename) {
+std::string* File::getContentFile(const std::string &filename) {
     std::ifstream fileIn(filename.c_str(), std::ios::binary);
 
     if (!fileIn.is_open()) {
         throw Exception("Can't open file " + filename);
     }
 
-    auto *contentsFile = new std::string();
+    auto* contentsFile = new std::string();
     fileIn.seekg(0, std::ios::end);
     contentsFile->resize((unsigned long)fileIn.tellg());
     fileIn.seekg(0, std::ios::beg);
@@ -49,9 +49,55 @@ std::string *File::getContentFile(const std::string &filename) {
     return contentsFile;
 }
 
+std::vector<std::string>* File::getContentsFileIntoVector(const std::string &filename) {
+    std::ifstream fileIn(filename.c_str(), std::ios::binary);
+    auto* resultVector = new std::vector<std::string>;
+
+    if (!fileIn.is_open()) {
+        fileIn.close();
+        resultVector->shrink_to_fit();
+        return resultVector;
+    }
+
+    // Get size of file to calculate the number of loop
+    size_t sizeFileIn = File::getSizeOfFile(filename);
+    size_t numberForLoop = sizeFileIn / 1024;
+    size_t leftoversOfFile = sizeFileIn % 1024;
+
+    // If fileIn is a blank file
+    if (sizeFileIn == 0) {
+        fileIn.close();
+        resultVector->shrink_to_fit();
+        return resultVector;
+    }
+
+    size_t index;
+    std::string stringToReadFile;
+    for (index = 0; index < numberForLoop; index++) {
+        stringToReadFile.resize(1025);
+        stringToReadFile.shrink_to_fit();
+        fileIn.read(&(stringToReadFile[0]), 1024);
+        stringToReadFile[1024] = '\0';
+        resultVector->push_back(stringToReadFile);
+        stringToReadFile.clear();
+        fileIn.seekg((index + 1) * 1024, std::ios::beg);
+    }
+
+    if (leftoversOfFile != 0) {
+        stringToReadFile.resize(leftoversOfFile + 1);
+        stringToReadFile.shrink_to_fit();
+        fileIn.read(&(stringToReadFile[0]), leftoversOfFile);
+        stringToReadFile[leftoversOfFile] = '\0';
+        resultVector->push_back(stringToReadFile);
+    }
+
+    fileIn.close();
+    return resultVector;
+}
+
 std::vector<std::string*>* File::splitStringToVector(const std::string &target) {
     // Get size of vector
-    std::vector<std::string*> *resultVector = new std::vector<std::string*>();
+    std::vector<std::string*>* resultVector = new std::vector<std::string*>();
     size_t sizeOfVector = target.size() / 1024;
     if (target.size() % 1024 > 0) {
         sizeOfVector += 1;
@@ -64,13 +110,13 @@ std::vector<std::string*>* File::splitStringToVector(const std::string &target) 
     size_t index;
     size_t indexInString = 0;
     for (index = 0; index < sizeOfVector - 1; index++) {
-        auto *bufferString = new std::string;
+        auto* bufferString = new std::string;
         bufferString->resize(1025);
         *bufferString = target.substr(indexInString, 1024);
         resultVector->push_back(bufferString);
         indexInString += 1024;
     }
-    auto *endOfString = new std::string;
+    auto* endOfString = new std::string;
     *endOfString = target.substr((unsigned long)indexInString, target.size() - indexInString);
     endOfString->shrink_to_fit();
     resultVector->push_back(endOfString);
@@ -91,7 +137,7 @@ size_t File::getSizeOfFile(const std::string &filename) {
     return sizeResult;
 }
 
-bool File::writeStringToFile(const std::string *&target, const std::string &filename) {
+bool File::writeStringToFile(const std::string* &target, const std::string &filename) {
     std::ofstream fileToWrite(filename.c_str(), std::ios::trunc);
 
     if (!fileToWrite.is_open()) {
@@ -104,7 +150,7 @@ bool File::writeStringToFile(const std::string *&target, const std::string &file
 }
 
 
-bool File::writeVectorStringToFile(const std::vector<std::string *> *target, const std::string &filename) {
+bool File::writeVectorStringToFile(const std::vector<std::string*>* target, const std::string &filename) {
     std::ofstream fileToWrite(filename.c_str(), std::ios::trunc);
 
     if (!fileToWrite.is_open()) {

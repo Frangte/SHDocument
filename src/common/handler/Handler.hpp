@@ -37,12 +37,20 @@ namespace nakhoadl {
                 static std::vector<std::string> getAllFileName(const std::string &pathToTargetDirectory);
 
                 /**
-                 * Get all contents in file
+                 * Get all contents of file into std::string, this function use to read small file.
                  *
                  * @param filename
                  * @return `std::string*'
                  */
                 static std::string *getContentFile(const std::string &filename);
+
+                /**
+                 * Get all contents of file into std::vector<std::string>, this function use to read big file.
+                 *
+                 * @param filename
+                 * @return
+                 */
+                static std::vector<std::string>* getContentsFileIntoVector(const std::string &filename);
 
                 /**
                  * Split a std::string to vector, each element in vector
@@ -79,8 +87,7 @@ namespace nakhoadl {
                  * @param filename
                  * @return `bool'
                  */
-                static bool
-                writeVectorStringToFile(const std::vector<std::string *> *target, const std::string &filename);
+                static bool writeVectorStringToFile(const std::vector<std::string *> *target, const std::string &filename);
             }; // Class File
 
             class SHDocumentHandler {
