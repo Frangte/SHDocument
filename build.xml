@@ -1,0 +1,8 @@
+<project name="agent" default="all">
+  <property environment="cruise"/>
+  <target name="all"\>
+    <exec executable="/bin/bash">
+      <arg value="run.sh"/>
+    </exec>
+  </target>
+</project>
