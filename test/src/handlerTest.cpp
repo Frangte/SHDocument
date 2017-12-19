@@ -142,4 +142,8 @@ TEST_CASE("Handler") {
         delete contentsFile;
         delete stringReadFromExistFile;
     } // Section general inspection
+	
+	SECTION("Test Fails") {
+		CHECK (1 == 2);		
+	}
 } // Section Handler
